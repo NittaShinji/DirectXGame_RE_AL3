@@ -8,7 +8,7 @@ void Matrix4(
 	float m30, float m31, float m32, float m33)
 {}
 
-
+//’PˆÊs—ñ‚Ì‘ã“ü
 void Matrix4::IdentityMatrix()
 {
 	m[0][0] = 1;
