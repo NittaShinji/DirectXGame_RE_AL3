@@ -33,7 +33,7 @@ Matrix4 Matrix4Identity();
 Matrix4 Matrix4Transpose(const Matrix4& m);
 
 // 拡大縮小行列の作成
-Matrix4 Matrix4Scaling(float sx, float sy, float sz);
+Matrix4 Matrix4Scaling(Matrix4 matScale,float sx, float sy, float sz);
 
 // 回転行列の作成
 Matrix4 Matrix4RotationX(float angle);
@@ -57,6 +57,8 @@ Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
 Vector3 Vector3TransformCoord(const Vector3& v, const Matrix4& m);
 // ベクトル変換
 Vector3 Vector3TransformNormal(const Vector3& v, const Matrix4& m);
+//度数法変換(ラジアン→度数法)
+float RadianChange();
 
 // 2項演算子オーバーロード
 Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);

@@ -51,6 +51,10 @@ class GameScene {
 
 	/// <summary>
 	/// ゲームシーン用
+	 
+	//単位行列
+	Matrix4 frontVec;
+
 	//テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 

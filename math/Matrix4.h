@@ -6,7 +6,6 @@ class Matrix4 {
   public:
 	// 行x列
 	float m[4][4];
-
 	// コンストラクタ
 	Matrix4();
 	// 成分を指定しての生成
@@ -18,4 +17,35 @@ class Matrix4 {
 
 	// 代入演算子オーバーロード
 	Matrix4& operator*=(const Matrix4& m2);
+
+	//単位行列
+	void IdentityMatrix();
+
+	//X軸回りの回転
+	void roateX();
+	//Y軸回りの回転
+	void roateY();
+	//Z軸回りの回転
+	void roateZ();
+
+	//度数法からラジアンに変換
+	float Toradian(float angle);
+
+	//スケーリング行列を生成
+	void Matrix4Scaling(float sx, float sy, float sz);
+
+	//X軸回りの回転行列
+	void Matrix4RotationX(float worldTransformRotationX);
+
+	//Y軸回りの回転行列
+	void Matrix4RotationY(float worldTransformRotationY);
+
+	//Z軸回りの回転行列
+	void Matrix4RotationZ(float worldTransformRotationZ);
+
+	//平行移動行列
+	void Matrix4Translation(float tx, float ty, float tz);
+	
+	//ワールド行列
+	void WorldMatrix(Matrix4 world,Matrix4 matScale, Matrix4 matRot, Matrix4 matTran);
 };
