@@ -31,6 +31,7 @@ class GameScene {
 	/// 初期化
 	/// </summary>
 	void Initialize();
+	Matrix4 WorldMatrix(Matrix4 matworld, Matrix4 matScale, Matrix4 matRot, Matrix4 matTrans);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -69,6 +70,9 @@ class GameScene {
 
 	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
+
+	//カメラ上方向の角度
+	float viewAngle = 0.0f;
 
 	/// </summary>
 };

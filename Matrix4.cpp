@@ -93,9 +93,9 @@ void Matrix4::Matrix4Translation(float tx, float ty, float tz)
 }
 
 //ÉèÅ[ÉãÉhçsóÒÇÃê∂ê¨
-void Matrix4::WorldMatrix(Matrix4 world, Matrix4 matScale, Matrix4 matRot, Matrix4 matTrans)
+void Matrix4::WorldMatrix(Matrix4 matworld, Matrix4 matScale, Matrix4 matRot, Matrix4 matTrans)
 {
-	world *= matScale;
-	world *= matRot;
-	world *= matTrans;
+	matworld *= matScale;
+	matworld *= matRot;
+	matworld *= matTrans;
 }
