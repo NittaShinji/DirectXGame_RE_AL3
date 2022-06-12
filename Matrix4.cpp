@@ -37,10 +37,10 @@ void Matrix4::roateZ()
 }
 
 //度数法変換(ラジアン→度数法)
-float Matrix4::Toradian(float angle)
-{
-	return angle / 180;
-}
+//float Matrix4::Toradian(float angle)
+//{
+//	return angle / 180;
+//}
 
 //スケーリング行列
 void Matrix4::Matrix4Scaling(float sx, float sy, float sz)

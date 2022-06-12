@@ -29,7 +29,7 @@ class Matrix4 {
 	void roateZ();
 
 	//度数法からラジアンに変換
-	float Toradian(float angle);
+	//float Toradian(float angle);
 
 	//スケーリング行列を生成
 	void Matrix4Scaling(float sx, float sy, float sz);
