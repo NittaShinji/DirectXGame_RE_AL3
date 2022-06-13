@@ -74,5 +74,8 @@ class GameScene {
 	//カメラ上方向の角度
 	float viewAngle = 0.0f;
 
+	//バイオ歩き
+	bool bioMove = 0;
+
 	/// </summary>
 };
