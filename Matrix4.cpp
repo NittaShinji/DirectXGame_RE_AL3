@@ -11,10 +11,20 @@ void Matrix4(
 //単位行列の代入
 void Matrix4::IdentityMatrix()
 {
-	m[0][0] = 1;
-	m[1][1] = 1;
-	m[2][2] = 1;
-	m[3][3] = 1;
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			if (i != j)
+			{
+				m[i][j] = 0;
+			}
+			else
+			{
+				m[i][j] = 1;
+			}
+		}
+	}
 }
 
 //void Matrix4::roateX()
@@ -94,7 +104,7 @@ void Matrix4::Matrix4Translation(float tx, float ty, float tz)
 //ワールド行列の生成
 void Matrix4::WorldMatrix(Matrix4 matworld, Matrix4 matScale, Matrix4 matRot, Matrix4 matTrans)
 {
-	matworld *= matScale;
+	matworld = matScale;
 	matworld *= matRot;
 	matworld *= matTrans;
 }
