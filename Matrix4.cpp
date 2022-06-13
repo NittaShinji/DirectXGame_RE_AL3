@@ -17,24 +17,23 @@ void Matrix4::IdentityMatrix()
 	m[3][3] = 1;
 }
 
-void Matrix4::roateX()
-{
-	m[0][0] = 1;
-	m[3][3] = 1;
+//void Matrix4::roateX()
+//{
+//	m[0][0] = 1;
+//	m[3][3] = 1;
+//}
 
-}
+//void Matrix4::roateY()
+//{
+//	m[1][1] = 1;
+//	m[3][3] = 1;
+//}
 
-void Matrix4::roateY()
-{
-	m[1][1] = 1;
-	m[3][3] = 1;
-}
-
-void Matrix4::roateZ()
-{
-	m[2][2] = 1;
-	m[3][3] = 1;
-}
+//void Matrix4::roateZ()
+//{
+//	m[2][2] = 1;
+//	m[3][3] = 1;
+//}
 
 //度数法変換(ラジアン→度数法)
 //float Matrix4::Toradian(float angle)
@@ -73,7 +72,7 @@ void Matrix4::Matrix4RotationY(float worldTransformRotationY)
 	m[3][3] = 1;
 }
 
-//Y軸回りの回転行列
+//Z軸回りの回転行列
 void Matrix4::Matrix4RotationZ(float worldTransformRotationZ) 
 {
 	m[0][0] = cos(worldTransformRotationZ);
@@ -99,3 +98,10 @@ void Matrix4::WorldMatrix(Matrix4 matworld, Matrix4 matScale, Matrix4 matRot, Ma
 	matworld *= matRot;
 	matworld *= matTrans;
 }
+
+
+
+//Matrix4& Matrix4::operator*=(float s)
+//{
+//
+//}
