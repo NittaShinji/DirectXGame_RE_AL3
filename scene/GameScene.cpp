@@ -258,18 +258,24 @@ void GameScene::Update()
 		viewProjection_.target.x += roate.x;
 		viewProjection_.target.z += roate.z;
 
+		//画面回転Y軸用回転用行列を宣言
+		Matrix4 matViewRotY;
+
+		//Y軸の回転要素を設定
+		matViewRotY.Matrix4RotationY(worldTransforms_[0].rotation_.y);
+
 		//正面移動の単位ベクトル
 		Vector3 frontVec = { 0, 0, 1 };
 
 		Vector3 target = viewProjection_.target;
-
+		
 		//正面ベクトルの計算
 		frontVec = target -= viewProjection_.eye;
 
 		//正面ベクトルを正規化
 		MathUtility::Vector3Normalize(frontVec);
 
-		Vector3 move = { 0.0f, 0.0f, 0.0f };
+		Vector3 move = { 0.0f, 0.0f, 1.0f };
 
 		//プレイヤーがカメラ右に進む処理
 		//右ベクトルの宣言
@@ -288,39 +294,32 @@ void GameScene::Update()
 
 		Vector3 resultVec = { 0,0,0 };
 
+		//カメラ視点の方向に移動
 		if (input_->PushKey(DIK_W))
 		{
-			move.z += frontVec.z * playerSpeed;
+			resultVec.x += frontVec.x * playerSpeed;
+			resultVec.z += frontVec.z * playerSpeed;
 		}
 		if (input_->PushKey(DIK_S))
 		{
-			move.z += -frontVec.z * playerSpeed;
+			resultVec.x -= frontVec.x * playerSpeed;
+			resultVec.z -= frontVec.z * playerSpeed;
 		}
 		if (input_->PushKey(DIK_D))
 		{
 			resultVec.x += rightVec.x * playerSpeed;
 			resultVec.z += rightVec.z * playerSpeed;
-
-			//move = { resultVec.x, 0.0f, +resultVec.z };
 		}
 		if (input_->PushKey(DIK_A))
 		{
 			resultVec.x += -rightVec.x * playerSpeed;
 			resultVec.z += -rightVec.z * playerSpeed;
-
-			//move = { resultVec.x, 0.0f, +resultVec.z };
 		}
 
 		worldTransforms_->translation_.x += resultVec.x;
 		worldTransforms_->translation_.z += resultVec.z;
 
-		worldTransforms_->translation_.z += move.z;
-
-
 		Matrix4 matTrans = MathUtility::Matrix4Identity();
-
-		/*matTrans.Matrix4Translation(
-			walk.x, walk.y, walk.z);*/
 
 		matTrans.Matrix4Translation(
 			worldTransforms_->translation_.x, 0, worldTransforms_->translation_.z);
