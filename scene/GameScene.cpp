@@ -313,8 +313,6 @@ void GameScene::Update()
 
 	debugText_->SetPos(50, 150);
 	debugText_->Printf("worldTranslation[1]:(%f,%f,%f)", worldTransforms_[1].translation_.x, worldTransforms_[1].translation_.y, worldTransforms_[1].translation_.z);
-
-
 }
 
 void GameScene::Draw() {
