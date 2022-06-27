@@ -220,6 +220,8 @@ void GameScene::Update()
 	matRotZ *= matRotY;
 	matRot = matRotZ;
 
+	const float playerSpeed = 0.01f;
+
 	//キャラクターの移動ベクトル
 	Vector3 playerMove = { 0,0,0 };
 
@@ -228,15 +230,19 @@ void GameScene::Update()
 
 	if (input_->PushKey(DIK_RIGHT))
 	{
-		playerMove.x += 0.1;
+		playerMove.x = playerSpeed;
+		worldTransforms_[0].translation_.x  += playerMove.x;
+
 	}
 	else if (input_->PushKey(DIK_LEFT))
 	{
-		playerMove.x -= 0.1;
+		playerMove.x = playerSpeed;
+		worldTransforms_[0].translation_ .x -= playerMove.x;
+
 	}
 
-	worldTransforms_[0].translation_ = playerMove;
-
+	//worldTransforms_[0].translation_ += playerMove;
+	
 	//ワールド行列の計算
 	//平行移動行列を宣言
 	Matrix4 matTrans = MathUtility::Matrix4Identity();
@@ -303,7 +309,12 @@ void GameScene::Update()
 	debugText_->Printf("forAngleY(Degree):%f", ToAngle(viewProjection_.fovAngleY));
 
 	debugText_->SetPos(50, 130);
-	debugText_->Printf("worldTranslation:(%f,%f,%f)", worldTransforms_[0].translation_.x, worldTransforms_[0].translation_.y, worldTransforms_[0].translation_.z);
+	debugText_->Printf("worldTranslation[0]:(%f,%f,%f)", worldTransforms_[0].translation_.x, worldTransforms_[0].translation_.y, worldTransforms_[0].translation_.z);
+
+	debugText_->SetPos(50, 150);
+	debugText_->Printf("worldTranslation[1]:(%f,%f,%f)", worldTransforms_[1].translation_.x, worldTransforms_[1].translation_.y, worldTransforms_[1].translation_.z);
+
+
 }
 
 void GameScene::Draw() {
