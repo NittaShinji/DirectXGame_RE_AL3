@@ -76,13 +76,19 @@ void GameScene::Initialize() {
 
 	//自機
 	worldTransforms_[0].Initialize();
-	worldTransforms_[0].translation_ = { 0.0f,0.0f,0.0f };
+	worldTransforms_[0].translation_ = { 0.0f,0.0f,0.0f};
 	
 	worldTransforms_[1].Initialize();
-	worldTransforms_[1].translation_ = { 5.0f,0.0f,0.0f };
+	worldTransforms_[1].translation_ = { 5.0f,0.0f,0.0f};
 	
 	worldTransforms_[2].Initialize();
-	worldTransforms_[2].translation_ = { -5.0f,0.0f,0.0f };
+	worldTransforms_[2].translation_ = { -5.0f,0.0f,0.0f};
+
+	worldTransforms_[3].Initialize();
+	worldTransforms_[3].translation_ = { 0.0f,0.0f,5.0f};
+
+	worldTransforms_[4].Initialize();
+	worldTransforms_[4].translation_ = { 0.0f,0.0f,-5.0f};
 
 	////ワールド行列の転送
 	//worldTransforms_[0].TransferMatrix();
@@ -90,7 +96,7 @@ void GameScene::Initialize() {
 	//worldTransforms_[2].TransferMatrix();
 
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Matrix4 matTrans = MathUtility::Matrix4Identity();
 
@@ -408,7 +414,7 @@ void GameScene::Update()
 		worldTransforms_[0].matWorld_ *= matRotY;
 		worldTransforms_[0].matWorld_ *= matTrans;
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			worldTransforms_[i].TransferMatrix();
 		}
@@ -529,6 +535,8 @@ void GameScene::Draw() {
 	model_->Draw(worldTransforms_[0], viewProjection_, textureHandle_);
 	model_->Draw(worldTransforms_[1], viewProjection_, textureHandle_);
 	model_->Draw(worldTransforms_[2], viewProjection_, textureHandle_);
+	model_->Draw(worldTransforms_[3], viewProjection_, textureHandle_);
+	model_->Draw(worldTransforms_[4], viewProjection_, textureHandle_);
 	
 	//for (int i = 0; i < 100; i++)
 	//{
