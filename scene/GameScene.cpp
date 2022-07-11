@@ -11,6 +11,7 @@
 #define M_PI 3.14159 /* 桁数はもっと多い方がいいかも */
 #endif
 
+void MatrixSet(WorldTransform& worldTransform);
 float ToRadian(float angle);
 float ToAngle(float radian);
 
@@ -47,12 +48,46 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 
-	//親(0番)
-	worldTransforms_[0].Initialize();
-	//子(1番)
-	worldTransforms_[1].Initialize();
-	worldTransforms_[1].translation_ = { 0.0f,4.5f,0.0f };
-	worldTransforms_[1].parent_ = &worldTransforms_[0];
+	//キャラクターの大元
+	worldTransforms_[PartId::kRoot].Initialize();
+	//脊髄
+	worldTransforms_[PartId::kSpine].Initialize();
+	worldTransforms_[PartId::kSpine].translation_ = { 0.0f,4.5f,0.0f };
+	worldTransforms_[PartId::kSpine].parent_ = &worldTransforms_[PartId::kRoot];
+
+	//上半身
+	worldTransforms_[PartId::kChest].Initialize();
+	worldTransforms_[PartId::kChest].translation_ = { 0.0f,0.0f,0.0f };
+	worldTransforms_[PartId::kChest].parent_ = &worldTransforms_[PartId::kSpine];
+
+	//頭
+	worldTransforms_[PartId::kHead].Initialize();
+	worldTransforms_[PartId::kHead].translation_ = { 0.0f,-5.0f,0.0f };
+	worldTransforms_[PartId::kHead].parent_ = &worldTransforms_[PartId::kChest];
+
+	//左腕
+	worldTransforms_[PartId::kArmL].Initialize();
+	worldTransforms_[PartId::kArmL].translation_ = { -5.0f,0.0f,0.0f };
+	worldTransforms_[PartId::kArmL].parent_ = &worldTransforms_[PartId::kChest];
+
+	//右腕
+	worldTransforms_[PartId::kArmR].Initialize();
+	worldTransforms_[PartId::kArmR].translation_ = { 5.0f,0.0f,0.0f };
+	worldTransforms_[PartId::kArmR].parent_ = &worldTransforms_[PartId::kChest];
+
+	//下半身
+	worldTransforms_[PartId::kHip].Initialize();
+	worldTransforms_[PartId::kHip].translation_ = { 0.0f,4.5f,0.0f };
+	worldTransforms_[PartId::kHip].parent_ = &worldTransforms_[PartId::kSpine];
+
+	//左足
+	worldTransforms_[PartId::kLegL].Initialize();
+	worldTransforms_[PartId::kLegL].translation_ = { -5.0f,4.5f,0.0f };
+	worldTransforms_[PartId::kLegL].parent_ = &worldTransforms_[PartId::kHip];
+	//右足
+	worldTransforms_[PartId::kLegR].Initialize();
+	worldTransforms_[PartId::kLegR].translation_ = { -5.0f,4.5f,0.0f };
+	worldTransforms_[PartId::kLegR].parent_ = &worldTransforms_[PartId::kHip];
 
 	////範囲forで全てのワールドトランスフォームを順に処理する
 	//for (WorldTransform& worldTransform : worldTransforms_)
@@ -187,11 +222,11 @@ void GameScene::Update()
 
 	////注視点移動(ベクトルの加算)
 	//viewProjection_.target += kTargetMove;
-	
+
 	//キャラクター移動処理
-	float scaleX = 2.0f;
-	float scaleY = 2.0f;
-	float scaleZ = 2.0f;
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
+	float scaleZ = 1.0f;
 
 	//x.y,z方向のスケーリングを設定
 	worldTransforms_[0].scale_ = { scaleX,scaleY,scaleZ };
@@ -220,29 +255,28 @@ void GameScene::Update()
 	matRotZ *= matRotY;
 	matRot = matRotZ;
 
-	const float playerSpeed = 0.01f;
+	const float playerSpeed = 0.05f;
 
 	//キャラクターの移動ベクトル
 	Vector3 playerMove = { 0,0,0 };
 
-	//キャラクターの速さ
-	//float playerSpeed = 0.01f;
-
 	if (input_->PushKey(DIK_RIGHT))
 	{
 		playerMove.x = playerSpeed;
-		worldTransforms_[0].translation_.x  += playerMove.x;
-
 	}
 	else if (input_->PushKey(DIK_LEFT))
 	{
-		playerMove.x = playerSpeed;
-		worldTransforms_[0].translation_ .x -= playerMove.x;
-
+		playerMove.x = -playerSpeed;
+	}
+	else
+	{
+		playerMove.x = 0.0f;
 	}
 
-	//worldTransforms_[0].translation_ += playerMove;
-	
+	worldTransforms_[PartId::kRoot].translation_.x += playerMove.x;
+
+	worldTransforms_[0].translation_ += playerMove;
+
 	//ワールド行列の計算
 	//平行移動行列を宣言
 	Matrix4 matTrans = MathUtility::Matrix4Identity();
@@ -251,15 +285,17 @@ void GameScene::Update()
 
 	worldTransforms_[0].matWorld_.IdentityMatrix();
 
+	worldTransforms_[0].matWorld_ = matScale;
+	worldTransforms_[0].matWorld_ *= matRot;
 	worldTransforms_[0].matWorld_ *= matTrans;
 
 	//行列の転送
 	worldTransforms_[0].TransferMatrix();
 
-	////子の更新
+	//子の更新
 
 	//x.y,z方向のスケーリングを設定
-	worldTransforms_[1].scale_ = {2.0f,2.0f,2.0f };
+	worldTransforms_[1].scale_ = { 1.0f,1.0f,1.0f };
 
 	//スケーリング行列を宣言
 	Matrix4 matScale2;
@@ -268,8 +304,8 @@ void GameScene::Update()
 	matScale2.Matrix4Scaling(scaleX, scaleY, scaleZ);
 
 	//x.y,z方向の回転角を乱数で設定
-	worldTransforms_[1].rotation_ = { 0.0f,0.0f,0.0f};
-	
+	worldTransforms_[1].rotation_ = { 0.0f,0.0f,0.0f };
+
 	//合成用回転行列を宣言
 	Matrix4 matRot2;
 
@@ -286,7 +322,7 @@ void GameScene::Update()
 	matRot2 = matRotZ2;
 
 	//x.y,z方向の平行移動(座標)を乱数で設定
-	worldTransforms_[1].translation_ = { 0.0f,0.0f,0.0f };
+	worldTransforms_[1].translation_ = { 0.0f,10.0f,0.0f };
 
 	Matrix4 matTrans2 = MathUtility::Matrix4Identity();
 
@@ -294,13 +330,20 @@ void GameScene::Update()
 
 	//スケーリング・回転・平行移動を合成した行列を計算
 	//ワールドトランスフォームに代入する
-	worldTransforms_[1].matWorld_.IdentityMatrix();
-	worldTransforms_[1].matWorld_ *= matScale2;
+	/*worldTransforms_[1].matWorld_.IdentityMatrix();
+
+	worldTransforms_[1].matWorld_ = matScale2;
 	worldTransforms_[1].matWorld_ *= matRot2;
 	worldTransforms_[1].matWorld_ *= matTrans2;
 
-	worldTransforms_[1].matWorld_ *= worldTransforms_[0].matWorld_;
+	worldTransforms_[1].matWorld_ *= worldTransforms_[0].matWorld_;*/
 	worldTransforms_[1].TransferMatrix();
+
+	//大元から順に更新していく
+	/*for (int i = 0; i < kNumPartId; i++)
+	{
+		MatrixSet(worldTransforms_[i]);
+	}*/
 
 	//行列の再計算
 	viewProjection_.UpdateMatrix();
@@ -359,15 +402,26 @@ void GameScene::Draw() {
 		model_->Draw(worldTransform, viewProjection_, textureHandle_);
 	}*/
 
-	model_->Draw(worldTransforms_[0], viewProjection_, textureHandle_);
-	model_->Draw(worldTransforms_[1], viewProjection_, textureHandle_);
+	for (int i = 0; i < kNumPartId; i++)
+	{
+		if (i == kRoot || i == kSpine)
+		{
+			continue;
+		}
+		else
+		{
+			model_->Draw(worldTransforms_[i], viewProjection_, textureHandle_);
+		}
+		
+	}
 
+	/*model_->Draw(worldTransforms_[0], viewProjection_, textureHandle_);
+	model_->Draw(worldTransforms_[1], viewProjection_, textureHandle_);*/
 
 	/*for (int i = 0; i < 100; i++)
 	{
 		model_->Draw(worldTransforms_[i], debugCamera_->GetViewProjection(), textureHandle_);
 	}*/
-
 
 	for (int i = 0; i < 100; i++)
 	{
@@ -406,6 +460,47 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+//スケーリング・回転・平行移動を宣言
+void MatrixSet(WorldTransform& worldTransform)
+{
+	//スケーリング用行列を宣言
+	Matrix4 matScale;
+	//合成用回転行列を宣言
+	Matrix4 matRot;
+	//各軸用回転用行列を宣言
+	Matrix4 matRotX, matRotY, matRotZ;
+	//座標用行列を宣言
+	Matrix4 matTrans;
+
+	//キャラクター移動処理
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
+	float scaleZ = 1.0f;
+
+	//スケーリング倍率を行列に設定
+	matScale.Matrix4Scaling(scaleX, scaleY, scaleZ);
+
+	//回転行列を行列に設定
+	matRot.Matrix4RotationX(worldTransform.translation_.x);
+	matRot.Matrix4RotationY(worldTransform.translation_.y);
+	matRot.Matrix4RotationZ(worldTransform.translation_.z);
+
+	//座標を行列に設定
+	matTrans.Matrix4Translation(
+		worldTransform.translation_.x,
+		worldTransform.translation_.y,
+		worldTransform.translation_.z);
+
+	//親行列と掛け算代入
+	if (worldTransform.parent_ != nullptr)
+	{
+		worldTransform.matWorld_ *= worldTransform.parent_->matWorld_;
+	}
+	
+	//ワールド行列を転送
+	worldTransform.TransferMatrix();
 }
 
 float ToRadian(float angle)

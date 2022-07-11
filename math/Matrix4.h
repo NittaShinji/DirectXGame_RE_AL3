@@ -31,19 +31,19 @@ class Matrix4 {
 	//度数法からラジアンに変換
 	//float Toradian(float angle);
 
-	//スケーリング行列を生成
+	//スケーリング行列を設定
 	void Matrix4Scaling(float sx, float sy, float sz);
 
-	//X軸回りの回転行列
+	//X軸回りの回転行列を設定
 	void Matrix4RotationX(float worldTransformRotationX);
 
-	//Y軸回りの回転行列
+	//Y軸回りの回転行列を設定
 	void Matrix4RotationY(float worldTransformRotationY);
 
-	//Z軸回りの回転行列
+	//Z軸回りの回転行列を設定
 	void Matrix4RotationZ(float worldTransformRotationZ);
 
-	//平行移動行列
+	//平行移動行列を設定
 	void Matrix4Translation(float tx, float ty, float tz);
 	
 	//ワールド行列

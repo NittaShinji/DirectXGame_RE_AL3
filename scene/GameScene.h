@@ -16,7 +16,25 @@
 /// </summary>
 class GameScene {
 
-  public: // メンバ関数
+  public: 
+
+	//パーツID
+	  enum PartId {
+
+		  kRoot,	//大元
+		  kSpine,	//脊髄
+		  kChest,	//胸
+		  kHead,	//頭
+		  kArmL,	//左腕
+		  kArmR,	//右腕
+		  kHip,		//尻
+		  kLegL,	//左足
+		  kLegR,	//左足
+
+		  kNumPartId
+	};
+
+	// メンバ関数
 	/// <summary>
 	/// コンストクラタ
 	/// </summary>
@@ -63,7 +81,7 @@ class GameScene {
 	Model* model_ = nullptr;
 
 	//ワールドトランスフォーム
-	WorldTransform worldTransforms_[100];
+	WorldTransform worldTransforms_[100] = { 0 };
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
