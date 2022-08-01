@@ -73,7 +73,7 @@ void Matrix4::Matrix4RotationY(float worldTransformRotationY)
 	m[3][3] = 1;
 }
 
-//Y軸回りの回転行列
+//Z軸回りの回転行列
 void Matrix4::Matrix4RotationZ(float worldTransformRotationZ) 
 {
 	m[0][0] = cos(worldTransformRotationZ);
@@ -92,10 +92,4 @@ void Matrix4::Matrix4Translation(float tx, float ty, float tz)
 	m[3][2] = tz;
 }
 
-//ワールド行列の生成
-void Matrix4::WorldMatrix(Matrix4 matworld, Matrix4 matScale, Matrix4 matRot, Matrix4 matTrans)
-{
-	matworld = matScale;
-	matworld *= matRot;
-	matworld *= matTrans;
-}
+

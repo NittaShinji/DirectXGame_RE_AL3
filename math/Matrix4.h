@@ -47,5 +47,5 @@ class Matrix4 {
 	void Matrix4Translation(float tx, float ty, float tz);
 	
 	//ワールド行列
-	void WorldMatrix(Matrix4 world,Matrix4 matScale, Matrix4 matRot, Matrix4 matTran);
+	float WorldMatrix(Matrix4 matScale, Matrix4 matRot, Matrix4 matTran);
 };

@@ -21,7 +21,7 @@ class GameScene {
 	//パーツID
 	  enum PartId {
 
-		  kRoot,	//大元
+		  kRoot = 0,	//大元
 		  kSpine,	//脊髄
 		  kChest,	//胸
 		  kHead,	//頭
